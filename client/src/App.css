@@ -1,1 +1,34 @@
+*{
+    margin: 0;
+    padding: 0;
+}
+
+.navbarBut{
+   
+    margin-left: 7rem;
+    font-size: 1.3rem;
+}
+
+.vl {
+    border-left: 0.1rem solid black;
+    
+    height: 64px;
+}
+
+.navBut{
+    font-size: 1.3rem;
+    padding-left: 2%;
+}
+
+.registerBox{
+    margin-top: 5%;
+    
+}
+
+
+
  
+
+/* #1ad2fb  */
+/*  #0a0b0b; */
+/*  #e0e0e0 */
