@@ -1,5 +1,6 @@
 import React from "react";
 import Container from '@material-ui/core/Container';
+import Box from '@mui/material/Box';
 import '../App.css'
 import './Signup.css'
 import axios from "axios";
@@ -33,7 +34,6 @@ export default function SignUp(props) {
         }
 
         axios.request(reqOptions).then(function (response) {
-            console.log(response.data.success);
             if (response.data.success) {
                 login()
             } else {
@@ -43,41 +43,40 @@ export default function SignUp(props) {
 
     }
 
-    // const { login } = props
 
 
     return (
         <div>
             <Container maxWidth="sm" className='registerBox' >
+                <Box sx={{ mt: 10 }} >
+                    <div>
+                        <form class="modal-content" onSubmit={handleSubmit}>
+                            <div class="container">
+                                <h1>Sign Up</h1>
+                                <p>Please fill in this form to create an account.</p>
+                                <hr />
+                                <label for="username"><b>Username</b></label>
+                                <input type="text" placeholder="Enter Username" name="username" required />
 
-                <div>
-                    <form class="modal-content" onSubmit={handleSubmit}>
-                        <div class="container">
-                            <h1>Sign Up</h1>
-                            <p>Please fill in this form to create an account.</p>
-                            <hr />
-                            <label for="username"><b>Username</b></label>
-                            <input type="text" placeholder="Enter Username" name="username" required />
+                                <label for="email"><b>Email</b></label>
+                                <input type="email" placeholder="Enter Email" name="email" required />
 
-                            <label for="email"><b>Email</b></label>
-                            <input type="email" placeholder="Enter Email" name="email" required />
+                                <label for="password"><b>Password</b></label>
+                                <input type="password" placeholder="Enter Password" name="password" required />
 
-                            <label for="password"><b>Password</b></label>
-                            <input type="password" placeholder="Enter Password" name="password" required />
-
-                            {/* <label for="psw-repeat"><b>Repeat Password</b></label>
+                                {/* <label for="psw-repeat"><b>Repeat Password</b></label>
                                 <input type="password" placeholder="Repeat Password" name="psw-repeat" required /> */}
 
 
-                            <p>By creating an account you agree to our  <a href='/'>Terms & Privacy</a></p>
+                                <p>By creating an account you agree to our  <a href='/'>Terms & Privacy</a></p>
 
-                            <div class="clearfix">
-                                <button type="submit" className="signupbtn button">Sign Up</button>
+                                <div class="clearfix">
+                                    <button type="submit" className="signupbtn button">Sign Up</button>
+                                </div>
                             </div>
-                        </div>
-                    </form>
-                </div>
-
+                        </form>
+                    </div>
+                </Box>
             </Container>
         </div>
     )

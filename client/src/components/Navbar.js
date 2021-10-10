@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar(props) {
     const classes = useStyles();
-    const { signup, login } = props
+    const { signup, login, home } = props
 
     return (
         <div className={classes.root} >
@@ -29,7 +29,7 @@ export default function Navbar(props) {
                 <Toolbar>
                     <Typography variant="h6" className={classes.title}>
                         Music App
-                        <Button className='navbarBut'>Home</Button>
+                        <Button className='navbarBut' onClick={() => home()}>Home</Button>
                         <Button className='navbarBut'>Support</Button>
                         <Button className='navbarBut'>Download</Button>
                     </Typography>
