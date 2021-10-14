@@ -4,38 +4,56 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-// import IconButton from '@material-ui/core/IconButton';
-// import MenuIcon from '@material-ui/icons/Menu';
-import "../App.css"
+import "./styles/Navbar.css";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
-
+    transparentBar: {
+        backgroundColor: 'transparent !important',
+        boxShadow: 'none',
+        fontFamily: ['Festive', 'cursive'],
+    },
     root: {
         margin: 0,
         flexGrow: 1,
     },
     title: {
+        marginLeft: 70,
         flexGrow: 1,
     },
+    // navbarBut: {
+    //     // marginLeft: '7rem',
+    //     fontSize: '1.1rem',
+    //     color: 'inherit',
+    // },
+    navBtn: {
+        // fontSize: '1rem',
+        width: 100,
+        // paddingLeft: "2%",
+    }
 }));
 
 export default function Navbar(props) {
     const classes = useStyles();
-    const { signup, login, home } = props
+    // const { signup, login, home } = props
 
     return (
         <div className={classes.root} >
-            <AppBar position="static">
+            <AppBar position="static" className={classes.transparentBar}>
                 <Toolbar>
-                    <Typography variant="h6" className={classes.title}>
-                        Music App
-                        <Button className='navbarBut' onClick={() => home()}>Home</Button>
-                        <Button className='navbarBut'>Support</Button>
-                        <Button className='navbarBut'>Download</Button>
+                    <Typography
+                        variant="h5"
+                        className={classes.title}>
+                        <Link to='/'>
+                            Music App
+                        </Link>
                     </Typography>
-                    <div class="vl" />
-                    <Button className='navBut' onClick={() => signup()}>Sign up</Button>
-                    <Button className='navBut' onClick={() => login()}>Log in</Button>
+                    <Link to='/signup' className={classes.navBtn}>
+                        <Button >Sign up</Button>
+                    </Link>
+                    <Link to='/login'>
+                        <Button className={classes.navBtn}>Log in</Button>
+                    </Link>
                 </Toolbar>
             </AppBar>
         </div>

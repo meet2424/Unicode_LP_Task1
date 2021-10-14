@@ -1,47 +1,57 @@
-import React, { useState } from "react";
+import React from "react";
 import Login from "./components/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Home"
-import SignUp from "./components/Signup"
+import Signup from "./components/Signup"
+import {
+    BrowserRouter,
+    Switch,
+    Route
+} from "react-router-dom";
+import Protected from "./components/Protected";
 //--------------------------------------------------IMP read-----------------------------------------------
 //Half done jwt 
 // oauth and finishing stylings are left
 
 const App = () => {
 
-    const [signUp, setSignUp] = useState(false)
-    const [logIn, setLogIn] = useState(false)
-    const [token, setToken] = useState("")
-    const [showPrivate, setShowPrivate] = useState(false)
+    // const [signUp, setSignUp] = useState(false)
+    // const [logIn, setLogIn] = useState(false)
 
-    const signup = () => {
-        setSignUp(true)
-        setLogIn(false)
-    }
+    // const signup = () => {
+    //     setSignUp(true)
+    //     setLogIn(false)
+    // }
 
-    const login = () => {
-        setLogIn(true)
-        setSignUp(false)
-    }
+    // const login = () => {
+    //     setLogIn(true)
+    //     setSignUp(false)
+    // }
 
-    const home = (bool, token) => {
-        setLogIn(false)
-        setSignUp(false)
-        setShowPrivate(bool)
-        setToken(token)
-        console.log(token);
-        console.log(bool);
-    }
+    // const home = () => {
+    //     setLogIn(false)
+    //     setSignUp(false)
+    //     console.log('h');
+    // }
 
 
 
     return (
-        <div>
-            <Navbar signup={signup} login={login} home={home} />
-            <Home showPrivate={showPrivate} token={token} />
+        <BrowserRouter>
+            <div>
+                <Navbar />
+            </div>
+            <Switch>
+                <Route path='/' exact component={Home} />
+                <Route path='/signup' component={Signup} />
+                <Route path='/login' component={Login} />
+                <Route path='/protected' component={Protected} />
+
+            </Switch>
+            {/* {(!signUp && !logIn) && <Home home={home} />}
             {signUp && <SignUp signup={signup} login={login} home={home} />}
-            {logIn && <Login signup={signup} login={login} home={home} />}
-        </div>
+            {logIn && <Login signup={signup} login={login} home={home} />} */}
+        </BrowserRouter>
     );
 }
 

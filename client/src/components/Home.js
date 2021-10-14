@@ -1,41 +1,12 @@
-import React, { useState } from "react";
-import axios from "axios";
+import React from 'react'
 
-export default function Home(props) {
-    const { showPrivate, token } = props
 
-    const [privateMsg, setPrivateMsg] = useState("")
-
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-
-        let headersList = {
-            "Content-Type": "application/json",
-            "Authorization": token,
-        }
-
-        let reqOptions = {
-            url: "http://localhost:5000/api/private",
-            method: "GET",
-            headers: headersList,
-        }
-
-        const response = await axios.request(reqOptions)
-        const { success, data } = response.data
-        console.log(success);
-        console.log(data);
-        if (success) {
-            setPrivateMsg(data)
-        }
-    }
+export default function Home() {
 
 
     return (
         <div>
-            <form onSubmit={handleSubmit}>
-                {showPrivate && <button type="submit">Private</button>}
-            </form>
-            <h1>{privateMsg}</h1>
+            <h1>Home Page</h1>
         </div>
     )
 }

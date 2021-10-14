@@ -2,45 +2,51 @@ import React from "react";
 import Container from '@material-ui/core/Container';
 import Box from '@mui/material/Box';
 import '../App.css'
-import './Signup.css'
+import './styles/Signup.css'
+import GoogleButton from 'react-google-button'
 import axios from "axios";
+import { Link, useHistory } from "react-router-dom";
 
-export default function SignUp(props) {
+export default function SignUp() {
 
-    const { login, signup } = props
-
-    const handleSubmit = (event) => {
+    const history = useHistory()
+    const handleSubmit = async (event) => {
         event.preventDefault()
         const { username, email, password } = event.target.elements
-        // console.log(username.value)
+        // console.log(password.value)
 
-
-        let headersList = {
-            "Content-Type": "application/json"
-        }
-
-        let formData = JSON.stringify({
+        const formData = ({
             "username": username.value,
             "email": email.value,
-            "password": password.value
+            "password": password.value,
         })
 
 
         let reqOptions = {
             url: "http://localhost:5000/api/auth/register",
             method: "POST",
-            headers: headersList,
             data: formData,
         }
 
-        axios.request(reqOptions).then(function (response) {
-            if (response.data.success) {
-                login()
-            } else {
-                signup()
-            }
-        })
+        // axios.request(reqOptions).then(function (response) {
+        //     console.log(response.data);
+        //     history.push("/");
+        // })
 
+        // console.log(reqOptions);
+        const response = await axios.request(reqOptions)
+        try {
+            console.log(response.data);
+            localStorage.setItem("authToken", response.data.token);
+
+            if (response.data) {
+                history.push("/protected");
+                // console.log('s');
+            }
+        } catch (error) {
+            console.log(error);
+            history.push("/signup");
+        }
     }
 
 
@@ -56,23 +62,26 @@ export default function SignUp(props) {
                                 <p>Please fill in this form to create an account.</p>
                                 <hr />
                                 <label for="username"><b>Username</b></label>
-                                <input type="text" placeholder="Enter Username" name="username" required />
+                                <input type="text" placeholder="Create Username" name="username" required />
 
                                 <label for="email"><b>Email</b></label>
                                 <input type="email" placeholder="Enter Email" name="email" required />
 
                                 <label for="password"><b>Password</b></label>
-                                <input type="password" placeholder="Enter Password" name="password" required />
+                                <input type="password" placeholder="Create Password" name="password" required />
 
-                                {/* <label for="psw-repeat"><b>Repeat Password</b></label>
-                                <input type="password" placeholder="Repeat Password" name="psw-repeat" required /> */}
+                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
+                                    className="gbtn"
+                                /></a>
 
-
-                                <p>By creating an account you agree to our  <a href='/'>Terms & Privacy</a></p>
+                                <p>By creating an account you agree to our  <a href='blank'>Terms & Privacy</a></p>
 
                                 <div class="clearfix">
                                     <button type="submit" className="signupbtn button">Sign Up</button>
                                 </div>
+                                <Link to='/login'>
+                                    <p>Already have an account ? Log in</p>
+                                </Link>
                             </div>
                         </form>
                     </div>

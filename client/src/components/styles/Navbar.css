@@ -1,0 +1,36 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto&display=swap');
+/* <sty */
+@import url('https://fonts.googleapis.com/css2?family=Festive&display=swap');
+/* </style> */
+ 
+
+Body{
+    /* font-family: 'Roboto', sans-serif; */
+    font-family: 'Festive', cursive;
+}
+
+ 
+
+.navbarBut{
+    margin-left: 7rem;
+    font-size: 1.3rem;
+}
+
+.vl {
+    border-left: 0.1rem solid black;
+    
+    height: 64px;
+}
+
+.navBut{
+    font-size: 1.3rem;
+    padding-left: 2%;
+}
+ 
+
+
+ 
+
+/* #1ad2fb  */
+/*  #0a0b0b; */
+/*  #e0e0e0 */

@@ -7,7 +7,6 @@ exports.protected = async (req, res, next) => {
 
     if (req.headers.authorization) {
         token = req.headers.authorization
-
     }
 
     if (!token) {
@@ -22,14 +21,13 @@ exports.protected = async (req, res, next) => {
         // console.log(decoded);
 
         const user = await User.findById(decoded.id);
+        // console.log(user);
 
         if (!user) {
             res.status(404).json({ success: false, error: 'No user found' })
             next();
         }
-
-        req.user = user;
-
+        req.user = user
         next();
 
     } catch (error) {
