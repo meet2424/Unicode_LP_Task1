@@ -6,23 +6,19 @@ const jwt = require('jsonwebtoken')
 const userSchema = new Schema({
     username: {
         type: String,
-        // required: [true, 'please provide a name']
     },
     email: {
         type: String,
-        // required: [true, 'please add email'],
-        // unique: true,
-        // match: [
-        //     /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/,
-        //     'please add valid email'
-        // ]
+        unique: true,
+
     },
     password: {
         type: String,
-        // required: [true, 'please add password'],
-        // minlength: 6
-    }
-
+    },
+    phone: {
+        type: Number,
+    },
+    role: String,
 })
 
 //Using mongoose and bcrypt

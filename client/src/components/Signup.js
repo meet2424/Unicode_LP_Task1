@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Container from '@material-ui/core/Container';
 import Box from '@mui/material/Box';
 import '../App.css'
@@ -6,46 +6,38 @@ import './styles/Signup.css'
 import GoogleButton from 'react-google-button'
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
+import { useForm } from "react-hook-form";
 
 export default function SignUp() {
-
+    let { register, handleSubmit, formState: { errors } } = useForm();
     const history = useHistory()
-    const handleSubmit = async (event) => {
-        event.preventDefault()
-        const { username, email, password } = event.target.elements
-        // console.log(password.value)
+    const [invalidMsg, setInvalidMsg] = useState('')
 
-        const formData = ({
-            "username": username.value,
-            "email": email.value,
-            "password": password.value,
-        })
+    const onSubmit = async (data) => {
+        const { username, email, password, phone } = data
 
 
         let reqOptions = {
             url: "http://localhost:5000/api/auth/register",
             method: "POST",
-            data: formData,
+            "Content-Type": "application/json",
+            data: ({
+                "username": username,
+                "email": email,
+                "phone": phone,
+                "password": password,
+            }),
         }
-
-        // axios.request(reqOptions).then(function (response) {
-        //     console.log(response.data);
-        //     history.push("/");
-        // })
-
-        // console.log(reqOptions);
-        const response = await axios.request(reqOptions)
         try {
-            console.log(response.data);
-            localStorage.setItem("authToken", response.data.token);
-
-            if (response.data) {
-                history.push("/protected");
-                // console.log('s');
+            const response = await axios.request(reqOptions)
+            if (!response.data.success) {
+                setInvalidMsg(response.data.message)
             }
+            localStorage.setItem("authToken", response.data.token);
+            history.push("/protected");
         } catch (error) {
-            console.log(error);
-            history.push("/signup");
+            console.log(error.response.data.message);
+            setInvalidMsg(error.response.data.message)
         }
     }
 
@@ -56,27 +48,80 @@ export default function SignUp() {
             <Container maxWidth="sm" className='registerBox' >
                 <Box sx={{ mt: 10 }} >
                     <div>
-                        <form class="modal-content" onSubmit={handleSubmit}>
-                            <div class="container">
-                                <h1>Sign Up</h1>
-                                <p>Please fill in this form to create an account.</p>
+                        <form className="modal-content" onSubmit={handleSubmit(onSubmit)}>
+                            <div className="container">
+                                {!invalidMsg && <h1>Sign Up</h1>}
+                                {!invalidMsg && <p>Please fill in this form to create an account.</p>}
+                                <h1 style={{ color: "red" }}>{invalidMsg}</h1>
                                 <hr />
-                                <label for="username"><b>Username</b></label>
-                                <input type="text" placeholder="Create Username" name="username" required />
+                                <label><b>Username</b></label>
+                                <input
+                                    type="text"
+                                    placeholder="Create Username"
+                                    name="username"
+                                    {...register("username", {
+                                        required: "Username is required",
+                                    })}
+                                />
+                                <p className="error">{errors.username?.message}</p>
 
-                                <label for="email"><b>Email</b></label>
-                                <input type="email" placeholder="Enter Email" name="email" required />
-
-                                <label for="password"><b>Password</b></label>
-                                <input type="password" placeholder="Create Password" name="password" required />
-
+                                <label><b>Email</b></label>
+                                <input
+                                    type="email"
+                                    placeholder="Enter Email"
+                                    name="email"
+                                    {...register("email", {
+                                        required: "Email is required",
+                                        pattern: {
+                                            value: /^(("[\w-\s]+")|([\w-]+(?:\.[\w-]+)*)|("[\w-\s]+")([\w-]+(?:\.[\w-]+)*))(@((?:[\w-]+\.)*\w[\w-]{0,66})\.([a-z]{2,6}(?:\.[a-z]{2})?)$)|(@\[?((25[0-5]\.|2[0-4][0-9]\.|1[0-9]{2}\.|[0-9]{1,2}\.))((25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\.){2}(25[0-5]|2[0-4][0-9]|1[0-9]{2}|[0-9]{1,2})\]?$)/,
+                                            message: "Enter a valid email",
+                                        }
+                                    })}
+                                />
+                                <p className="error">{errors.email?.message}</p>
+                                <label><b>Phone Number</b></label>
+                                <input
+                                    type="tel"
+                                    placeholder="Enter Phone Number"
+                                    name="phone"
+                                    {...register("phone", {
+                                        required: "Phone Number is required",
+                                        pattern: {
+                                            value: /^[0-9\b]+$/,
+                                            message: "Only Numbers allowed",
+                                        },
+                                        minLength: {
+                                            value: 10,
+                                            message: "Phone Number must be of length 10 ",
+                                        },
+                                        maxLength: {
+                                            value: 10,
+                                            message: "Phone Number must be of length 10 ",
+                                        },
+                                    })}
+                                />
+                                <p className="error">{errors.phone?.message}</p>
+                                <label><b>Password</b></label>
+                                <input
+                                    type="password"
+                                    placeholder="Create Password"
+                                    name="password"
+                                    {...register("password", {
+                                        required: "Password is required",
+                                        minLength: {
+                                            value: 6,
+                                            message: "Password must be more than 6 characters",
+                                        }
+                                    })}
+                                />
+                                <p className="error">{errors.password?.message}</p>
                                 <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
                                     className="gbtn"
                                 /></a>
 
                                 <p>By creating an account you agree to our  <a href='blank'>Terms & Privacy</a></p>
 
-                                <div class="clearfix">
+                                <div className="clearfix">
                                     <button type="submit" className="signupbtn button">Sign Up</button>
                                 </div>
                                 <Link to='/login'>

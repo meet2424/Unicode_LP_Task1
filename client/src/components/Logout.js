@@ -13,7 +13,7 @@ export default function Logout() {
 
     return (
         <div>
-            <button type="submit" onClick={logout}>Logout</button>
+            <button type="submit" className="logoutbtn" onClick={logout}>Logout</button>
         </div>
     )
 }

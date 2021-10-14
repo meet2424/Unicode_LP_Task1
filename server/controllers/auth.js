@@ -4,29 +4,30 @@ const bcrypt = require('bcryptjs')
 exports.register = async (req, res, next) => {
 
     console.log(req.body);
-    const { username, email, password } = req.body;
+    const { username, email, password, phone } = req.body;
     try {
         const user = await User.create({
             username,
             email,
             password,
+            phone,
         })
-        // console.log(user);
+        console.log(user);
         if (!user) {
-            console.log('ns');
-            res.status(404).json({
+            // console.log('ns');
+            return res.status(404).json({
                 success: false,
-                error: 'invalid credentials'
+                message: 'User already their'
             })
         }
-        console.log('s');
+        // console.log('s');
         sendToken(user, 201, res)
 
     } catch (error) {
         console.log(error);
-        res.status(500).json({
+        return res.status(500).json({
             success: false,
-            error: error.message,
+            message: 'User already their',
         });
     }
 
@@ -36,30 +37,35 @@ exports.login = async (req, res, next) => {
 
     const { email, password } = req.body;
 
+    const user = await User.findOne({ email })
     try {
-
-        const user = await User.findOne({ email })
-
         if (!user) {
-            res.status(404).json({
+            // console.log('fe');
+            return res.status(404).json({
                 success: false,
-                error: 'incorrect email'
+                message: 'Incorrect email'
             })
         }
 
         const isMatch = await user.matchPassword(password);
 
         if (!isMatch) {
-            res.status(404).json({
+            // console.log('fp');
+            return res.status(404).json({
                 success: false,
-                error: 'incorrect password'
+                message: 'Incorrect password'
             })
+            // console.log('d');
         }
-        console.log('log');
+        // console.log('log');
         sendToken(user, 200, res)
 
     } catch (error) {
-        console.log(error);
+        // console.log('f');
+        return res.status(505).json({
+            success: false,
+            error: 'Invalid Credentials'
+        })
     }
 
 }
