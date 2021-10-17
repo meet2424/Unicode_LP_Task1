@@ -1,11 +1,9 @@
 import React, { useEffect, useState } from 'react'
 import axios from 'axios'
 import { useHistory, useLocation } from 'react-router-dom'
-import Logout from './Logout';
+import Logout from '../Logout';
 
 export default function Protected() {
-
-
     const query = new URLSearchParams(useLocation().search);
 
     if (query.get('token') && !localStorage.getItem('authToken')) {

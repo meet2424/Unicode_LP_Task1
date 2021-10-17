@@ -1,9 +1,8 @@
 const User = require('../models/User')
-const bcrypt = require('bcryptjs')
 
+//============================REGISTER USER==========================
 exports.register = async (req, res, next) => {
 
-    console.log(req.body);
     const { username, email, password, phone } = req.body;
     try {
         const user = await User.create({
@@ -12,19 +11,20 @@ exports.register = async (req, res, next) => {
             password,
             phone,
         })
-        console.log(user);
+
         if (!user) {
-            // console.log('ns');
+            //USER ALREADY THEIR
             return res.status(404).json({
                 success: false,
                 message: 'User already their'
             })
         }
-        // console.log('s');
+
+        //USER CREDENTIALS TRUE
         sendToken(user, 201, res)
 
     } catch (error) {
-        console.log(error);
+        //SERVER ERROR
         return res.status(500).json({
             success: false,
             message: 'User already their',
@@ -33,6 +33,7 @@ exports.register = async (req, res, next) => {
 
 }
 
+//============================LOGIN USER==========================
 exports.login = async (req, res, next) => {
 
     const { email, password } = req.body;
@@ -40,7 +41,7 @@ exports.login = async (req, res, next) => {
     const user = await User.findOne({ email })
     try {
         if (!user) {
-            // console.log('fe');
+            //INCORRECT EMAIL
             return res.status(404).json({
                 success: false,
                 message: 'Incorrect email'
@@ -50,18 +51,18 @@ exports.login = async (req, res, next) => {
         const isMatch = await user.matchPassword(password);
 
         if (!isMatch) {
-            // console.log('fp');
+            //INCORRECT PASSWORD
             return res.status(404).json({
                 success: false,
                 message: 'Incorrect password'
             })
-            // console.log('d');
+
         }
-        // console.log('log');
+        //USER CREDENTIALS TRUE
         sendToken(user, 200, res)
 
     } catch (error) {
-        // console.log('f');
+        //SERVER ERROR
         return res.status(505).json({
             success: false,
             error: 'Invalid Credentials'
@@ -70,23 +71,23 @@ exports.login = async (req, res, next) => {
 
 }
 
+//Redirecting GOOGLE USER to protected route in client side
 exports.ologin = (req, res, next) => {
     if (!req.user) {
-        console.log('f');
-        res.status(404).json({
+
+        return res.status(404).json({
             success: false,
             error: 'User not found'
         })
     }
     const token = req.user.createToken();
-    // localStorage.setItem('authToken', token)
-    res.redirect(`http://localhost:3000/protected?token=${token}`);
 
+    res.redirect(`http://localhost:3000/protected?token=${token}`);
 
 }
 
 
-// this function will return a token when called
+//This function will return a token on call
 const sendToken = (user, statusCode, res) => {
     const token = user.createToken();
     res.status(statusCode).json({

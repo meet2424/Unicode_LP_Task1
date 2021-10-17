@@ -21,21 +21,13 @@ const useStyles = makeStyles((theme) => ({
         marginLeft: 70,
         flexGrow: 1,
     },
-    // navbarBut: {
-    //     // marginLeft: '7rem',
-    //     fontSize: '1.1rem',
-    //     color: 'inherit',
-    // },
     navBtn: {
-        // fontSize: '1rem',
         width: 100,
-        // paddingLeft: "2%",
     }
 }));
 
 export default function Navbar(props) {
     const classes = useStyles();
-    // const { signup, login, home } = props
 
     return (
         <div className={classes.root} >

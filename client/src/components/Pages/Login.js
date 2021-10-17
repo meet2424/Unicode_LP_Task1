@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Container from '@material-ui/core/Container';
 import Box from '@mui/material/Box';
-import './styles/Login.css'
+import '../styles/Login.css'
 import GoogleButton from 'react-google-button'
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
@@ -11,6 +11,7 @@ export default function Login() {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const history = useHistory()
     const [invalidMsg, setInvalidMsg] = useState('')
+
 
     const onSubmit = async (data) => {
         const { email, password } = data
@@ -27,11 +28,14 @@ export default function Login() {
 
         try {
             const response = await axios.request(reqOptions)
+
             if (!response.data.success) {
                 setInvalidMsg(response.data.message)
             }
+
             localStorage.setItem("authToken", response.data.token);
             history.push('/protected')
+
         } catch (error) {
             setInvalidMsg(error.response.data.message)
         }
@@ -64,6 +68,7 @@ export default function Login() {
                                     })}
                                 />
                                 <p className="error">{errors.email?.message}</p>
+
                                 <label><b>Password</b></label>
                                 <input
                                     type="password"
@@ -78,12 +83,16 @@ export default function Login() {
                                     })}
                                 />
                                 <p className="error">{errors.password?.message}</p>
+
                                 <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
                                     className="gbtn"
-                                /></a>
+                                />
+                                </a>
+
                                 <div className="clearfix">
                                     <button type="submit" className="loginbtn button">Log in</button>
                                 </div>
+
                                 <Link to='/signup'>
                                     <p>Dont have an account ? Sign up</p>
                                 </Link>

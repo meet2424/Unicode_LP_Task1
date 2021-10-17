@@ -1,21 +1,21 @@
 import React, { useState } from "react";
 import Container from '@material-ui/core/Container';
 import Box from '@mui/material/Box';
-import '../App.css'
-import './styles/Signup.css'
+import '../styles/Signup.css'
 import GoogleButton from 'react-google-button'
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
 export default function SignUp() {
-    let { register, handleSubmit, formState: { errors } } = useForm();
+
+    const { register, handleSubmit, formState: { errors } } = useForm();
     const history = useHistory()
     const [invalidMsg, setInvalidMsg] = useState('')
 
+
     const onSubmit = async (data) => {
         const { username, email, password, phone } = data
-
 
         let reqOptions = {
             url: "http://localhost:5000/api/auth/register",
@@ -30,13 +30,15 @@ export default function SignUp() {
         }
         try {
             const response = await axios.request(reqOptions)
+
             if (!response.data.success) {
                 setInvalidMsg(response.data.message)
             }
+
             localStorage.setItem("authToken", response.data.token);
             history.push("/protected");
+
         } catch (error) {
-            console.log(error.response.data.message);
             setInvalidMsg(error.response.data.message)
         }
     }
@@ -79,6 +81,7 @@ export default function SignUp() {
                                     })}
                                 />
                                 <p className="error">{errors.email?.message}</p>
+
                                 <label><b>Phone Number</b></label>
                                 <input
                                     type="tel"
@@ -101,6 +104,7 @@ export default function SignUp() {
                                     })}
                                 />
                                 <p className="error">{errors.phone?.message}</p>
+
                                 <label><b>Password</b></label>
                                 <input
                                     type="password"
@@ -118,8 +122,6 @@ export default function SignUp() {
                                 <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
                                     className="gbtn"
                                 /></a>
-
-                                <p>By creating an account you agree to our  <a href='blank'>Terms & Privacy</a></p>
 
                                 <div className="clearfix">
                                     <button type="submit" className="signupbtn button">Sign Up</button>

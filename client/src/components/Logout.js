@@ -5,7 +5,7 @@ export default function Logout() {
 
     const history = useHistory()
 
-    const logout = (event) => {
+    const onLogout = () => {
         localStorage.removeItem("authToken")
         history.push('/')
     }
@@ -13,7 +13,7 @@ export default function Logout() {
 
     return (
         <div>
-            <button type="submit" className="logoutbtn" onClick={logout}>Logout</button>
+            <button type="submit" className="logoutbtn" onClick={onLogout}>Logout</button>
         </div>
     )
 }
