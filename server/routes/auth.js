@@ -15,4 +15,5 @@ router.get('/google', passport.authenticate('google', { scope: ['profile', 'emai
 // ======================== GOOGLE CALLBACK ROUTE ======================
 router.get('/google/redirect', passport.authenticate('google'), ologin)
 
+
 module.exports = router;
