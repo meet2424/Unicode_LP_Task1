@@ -20,7 +20,7 @@ const singleFileUpload = async (req, res, next) => {
 
     }
     catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send("A Error occupied please try again");
     }
 }
 
@@ -47,7 +47,7 @@ const multipleFilesUpload = async (req, res, next) => {
         res.status(201).send("Files Uploaded Successfully");
     }
     catch (error) {
-        res.status(400).send(error.message);
+        res.status(400).send("A Error occupied please try again");
     }
 }
 
@@ -61,9 +61,18 @@ const getAllSingleFiles = async (req, res, next) => {
 }
 const getAllMultipleFiles = async (req, res, next) => {
     try {
-        const files = await MultipleFiles.find();
-        res.status(200).send(files);
+        if (req.user.role === "artist") {
+            const files = await MultipleFiles.find({ 'username': req.user.username });
+            res.status(200).send(files);
+        }
+        else {
+            const files = await MultipleFiles.find();
+            res.status(200).send(files);
+
+        }
+        // console.log(files);
     } catch (error) {
+        // console.log('e');
         res.status(400).send(error.message);
     }
 }

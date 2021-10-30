@@ -26,6 +26,7 @@ export default function SignUp() {
                 "email": email,
                 "phone": phone,
                 "password": password,
+                "role": "artist"
             }),
         }
         try {
@@ -56,6 +57,15 @@ export default function SignUp() {
                                 {!invalidMsg && <p>Please fill in this form to create an account.</p>}
                                 <h1 style={{ color: "red" }}>{invalidMsg}</h1>
                                 <hr />
+
+                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
+                                    className="gbtn"
+                                />
+                                </a>
+
+                                <br />
+                                <p style={{ textAlign: 'center' }}>OR</p>
+                                <br />
                                 <label><b>Username</b></label>
                                 <input
                                     type="text"
@@ -119,9 +129,7 @@ export default function SignUp() {
                                     })}
                                 />
                                 <p className="error">{errors.password?.message}</p>
-                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
-                                    className="gbtn"
-                                /></a>
+
 
                                 <div className="clearfix">
                                     <button type="submit" className="signupbtn button">Sign Up</button>

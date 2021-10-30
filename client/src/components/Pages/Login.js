@@ -54,6 +54,13 @@ export default function Login() {
                                 <h1 style={{ color: "red" }}>{invalidMsg}</h1>
                                 <hr />
 
+                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
+                                    className="gbtn"
+                                />
+                                </a>
+                                <br />
+                                <p style={{ textAlign: 'center' }}>OR</p>
+                                <br />
                                 <label><b>Email</b></label>
                                 <input
                                     type="email"
@@ -84,10 +91,6 @@ export default function Login() {
                                 />
                                 <p className="error">{errors.password?.message}</p>
 
-                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
-                                    className="gbtn"
-                                />
-                                </a>
 
                                 <div className="clearfix">
                                     <button type="submit" className="loginbtn button">Log in</button>

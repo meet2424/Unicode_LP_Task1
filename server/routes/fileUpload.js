@@ -6,7 +6,7 @@ const router = require('express').Router();
 // ============================ARTIST ROUTE=======================
 
 //===========SINGEFILE===========
-router.get('/getAllsingleFiles', getAllSingleFiles);
+router.get('/getAllSingleFiles', getAllSingleFiles);
 
 router.post('/singleFileUpload', upload.single("file"), singleFileUpload);
 
