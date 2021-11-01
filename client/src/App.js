@@ -3,7 +3,6 @@ import Login from "./components/Pages/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Pages/Home"
 import Signup from "./components/Pages/Signup"
-import Protected from "./components/Pages/Protected";
 import Artist from "./components/Pages/Artist";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './App.css'
@@ -20,7 +19,6 @@ const App = () => {
                 <Route path='/' exact component={Home} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
-                <Route path='/protected' component={Protected} />
                 <Route path='/artist' component={Artist} />
 
             </Switch>

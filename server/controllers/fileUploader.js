@@ -5,17 +5,19 @@ const singleFileUpload = async (req, res, next) => {
 
     try {
 
-        console.log(req.file);
-        console.log(req.body);
+        // console.log(req.file);
+        // console.log(req.body.username);
         const file = new SingleFile({
             fileName: req.file.originalname,
             filePath: req.file.path,
             fileType: req.file.mimetype,
             fileSize: fileSizeFormatter(req.file.size, 2),
             songTitle: req.body.songTitle,
-            artist: req.body.artist
+            artist: req.body.artist,
+            username: req.body.username,
         });
         await file.save();
+        // console.log(file);
         res.status(201).send("File uploaded successfully");
 
     }
@@ -41,6 +43,7 @@ const multipleFilesUpload = async (req, res, next) => {
             files: filesArray,
             artist: req.body.artist,
             albumTitle: req.body.albumTitle,
+            username: req.body.username,
         })
 
         await multipleFiles.save();
@@ -61,18 +64,9 @@ const getAllSingleFiles = async (req, res, next) => {
 }
 const getAllMultipleFiles = async (req, res, next) => {
     try {
-        if (req.user.role === "artist") {
-            const files = await MultipleFiles.find({ 'username': req.user.username });
-            res.status(200).send(files);
-        }
-        else {
-            const files = await MultipleFiles.find();
-            res.status(200).send(files);
-
-        }
-        // console.log(files);
+        const files = await MultipleFiles.find();
+        res.status(200).send(files);
     } catch (error) {
-        // console.log('e');
         res.status(400).send(error.message);
     }
 }

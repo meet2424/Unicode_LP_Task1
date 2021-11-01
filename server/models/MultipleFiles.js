@@ -10,7 +10,8 @@ const multipleFilesSchema = new Schema({
     artist: {
         type: String,
         required: true
-    }
+    },
+    username: String,
 }, { timeStamps: true });
 
 module.exports = mongoose.model("MultipleFiles", multipleFilesSchema)

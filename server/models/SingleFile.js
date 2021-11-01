@@ -25,7 +25,8 @@ const singleFileSchema = new Schema({
     artist: {
         type: String,
         required: true
-    }
+    },
+    username: String,
 }, { timeStamps: true });
 
 module.exports = mongoose.model("SingleFile", singleFileSchema)

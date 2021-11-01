@@ -38,8 +38,8 @@ export const multipleFilesUpload = async (formData) => {
 export const getMultipleFiles = async () => {
     try {
         const response = await axios.get(apiUrl + "getAllMultipleFiles");
-        // console.log('m');
         // console.log(response);
+        // console.log('m');
         return response;
     }
     catch (err) {

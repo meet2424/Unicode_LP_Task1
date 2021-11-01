@@ -1,13 +1,58 @@
-import React, { useState } from 'react'
-// import axios from "axios";
+import React, { useState, useEffect } from 'react'
 import { singleFileUpload, getAllSingleFiles, multipleFilesUpload, getMultipleFiles } from '../../api/files';
 import { Box, Button, TextField } from '@mui/material';
-import { useHistory } from 'react-router-dom'
+import axios from 'axios'
+import { useHistory, useLocation } from 'react-router-dom'
 
 export default function Artist() {
 
+    const [userName, setUserName] = useState('')
     const history = useHistory()
 
+    //Check If Artist Or Not
+    const query = new URLSearchParams(useLocation().search);
+
+    if (query.get('token') && !localStorage.getItem('authToken')) {
+        localStorage.setItem('authToken', query.get('token'))
+    }
+
+    useEffect(() => {
+
+        if (!localStorage.getItem('authToken')) {
+            history.push('/')
+        }
+
+        const callProtected = async () => {
+
+            let reqOptions = {
+                url: "http://localhost:5000/api/artist",
+                method: "GET",
+                headers: {
+                    "Content-Type": "application/json",
+                    "Authorization": localStorage.getItem("authToken"),
+                },
+            }
+
+            try {
+                const response = await axios.request(reqOptions)
+                const { success, username } = response.data
+                if (success) {
+                    setUserName(username)
+                }
+
+            } catch (error) {
+                // localStorage.removeItem('authToken')
+                history.push('/')
+            }
+        }
+
+        callProtected();
+
+    }, [history])
+
+    // });
+
+    //
     const [singleFile, setSingleFile] = useState('')
     const [multipleFiles, setMultipleFile] = useState('')
     const [showMultipleFiles, setShowMultipleFiles] = useState([]);
@@ -29,11 +74,12 @@ export default function Artist() {
         formData.append("file", singleFile);
         formData.append("songTitle", songTitle.value);
         formData.append("artist", artist.value);
+        formData.append("username", userName);
+
         try {
             const response = await singleFileUpload(formData)
             setUploadMsg(response.data)
             document.getElementById("uploadSingleFile").reset();
-            // e.target.value = null;
         } catch (error) {
             setUploadMsg(error.response.data)
         }
@@ -49,6 +95,7 @@ export default function Artist() {
         }
         formData.append("albumTitle", albumTitle.value);
         formData.append("artist", artist.value);
+        formData.append("username", userName);
 
 
         try {
@@ -66,11 +113,13 @@ export default function Artist() {
             const singleFilesList = await getAllSingleFiles();
             setShowSingleFiles(singleFilesList.data);
         } catch (error) {
+            console.log(error)
         }
         try {
             const multipleFilesList = await getMultipleFiles();
             setShowMultipleFiles(multipleFilesList.data);
         } catch (error) {
+            console.log(error)
         }
     }
 
@@ -127,10 +176,12 @@ export default function Artist() {
             <Box>
                 <h2>Single Tracks</h2>
                 {showSingleFiles.map((file) => {
-                    return <Box key={file._id}>
-                        <p>{file.fileName}</p>
-                        <br />
-                    </Box>
+                    return <div>
+                        {(file.username === userName) && <Box key={file._id}>
+                            <p>{file.fileName}</p>
+                            <br />
+                        </Box>}
+                    </div>
                 })}
             </Box>
             <Box>
@@ -138,7 +189,7 @@ export default function Artist() {
 
                 {showMultipleFiles.map((album) => {
                     return <div>
-                        <Box key={album._id}>
+                        {(album.username === userName) && <Box key={album._id}>
                             <h3>{album.albumTitle}</h3>
 
                             {album.files.map((file, index) => {
@@ -146,8 +197,9 @@ export default function Artist() {
                                     <p>{file.fileName}</p>
                                 </Box>
                             })}
+                            <br />
                         </Box>
-                        <br />
+                        }
                     </div>
                 })}
             </Box>

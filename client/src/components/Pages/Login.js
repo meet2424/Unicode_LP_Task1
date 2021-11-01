@@ -34,7 +34,7 @@ export default function Login() {
             }
 
             localStorage.setItem("authToken", response.data.token);
-            history.push('/protected')
+            history.push('/')
 
         } catch (error) {
             setInvalidMsg(error.response.data.message)

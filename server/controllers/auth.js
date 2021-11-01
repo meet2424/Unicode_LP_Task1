@@ -3,13 +3,14 @@ const User = require('../models/User')
 //============================REGISTER USER==========================
 exports.register = async (req, res, next) => {
 
-    const { username, email, password, phone } = req.body;
+    const { username, email, password, phone, role } = req.body;
     try {
         const user = await User.create({
             username,
             email,
             password,
             phone,
+            role,
         })
 
         if (!user) {
@@ -20,7 +21,7 @@ exports.register = async (req, res, next) => {
             })
         }
 
-        //USER CREDENTIALS TRUE
+        //USER CREDENTIALS TRUE 
         sendToken(user, 201, res)
 
     } catch (error) {
