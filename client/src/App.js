@@ -1,25 +1,34 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Login from "./components/Pages/Login";
 import Navbar from "./components/Navbar";
 import Home from "./components/Pages/Home"
 import Signup from "./components/Pages/Signup"
 import Artist from "./components/Pages/Artist";
+import Songs from "./components/Pages/Songs";
 import { BrowserRouter, Switch, Route } from "react-router-dom";
 import './App.css'
 
 const App = () => {
-
+    const [role, setRole] = useState('')
+    useEffect(() => {
+        const fetchData = () => {
+            setRole(localStorage.getItem('role'))
+            console.log('role');
+        }
+        fetchData();
+    }, [role]);
 
     return (
         <BrowserRouter>
             <div>
-                <Navbar />
+                <Navbar role={role} />
             </div>
             <Switch>
                 <Route path='/' exact component={Home} />
                 <Route path='/signup' component={Signup} />
                 <Route path='/login' component={Login} />
                 <Route path='/artist' component={Artist} />
+                <Route path='/songs' component={Songs} />
 
             </Switch>
 
@@ -29,38 +38,3 @@ const App = () => {
 
 export default App;
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// Spotify Color Palette
-// #1ed760 , #21e065
-// #b22c15
-// #2941ab
-// Google OAuth Button - #1877f2
-//

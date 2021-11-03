@@ -14,9 +14,36 @@ router.get('/artist', protected, (req, res) => {
                 username: req.user.username
             })
         }
+        else {
+            res.status(200).json({
+                success: false
+            })
+        }
     } catch (error) {
         res.status(401).json({
             success: false,
+            message: error.message
+        })
+    }
+
+})
+router.get('/user', protected, (req, res) => {
+    try {
+        if (req.user) {
+            res.status(200).json({
+                success: true,
+                username: req.user.username
+            })
+        }
+        else {
+            res.status(200).json({
+                success: false
+            })
+        }
+    } catch (error) {
+        res.status(401).json({
+            success: false,
+            message: error.message
         })
     }
 

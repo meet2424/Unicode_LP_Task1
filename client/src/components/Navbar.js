@@ -28,6 +28,14 @@ const useStyles = makeStyles((theme) => ({
 
 export default function Navbar(props) {
     const classes = useStyles();
+    const { role } = props
+    console.log('please');
+
+    // const [role, setRole] = useState('')
+    // if (localStorage.getItem('role')) {
+    //     const take = localStorage.getItem('role')
+    //     setRole(take)
+    // }
 
     return (
         <div className={classes.root} >
@@ -40,8 +48,14 @@ export default function Navbar(props) {
                             Music App
                         </Link>
                     </Typography>
-                    <Link to='/signup' className={classes.navBtn}>
-                        <Button >Sign up</Button>
+                    {role === 'artist' && <Link to='/artist'>
+                        <Button className={classes.navBtn}>Artist</Button>
+                    </Link>}
+                    {role === 'user' && <Link to='/songs'>
+                        <Button className={classes.navBtn}>Songs</Button>
+                    </Link>}
+                    <Link to='/signup' >
+                        <Button className={classes.navBtn}>Sign up</Button>
                     </Link>
                     <Link to='/login'>
                         <Button className={classes.navBtn}>Log in</Button>

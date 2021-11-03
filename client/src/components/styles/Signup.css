@@ -107,3 +107,9 @@ hr {
   margin-bottom: 15px;
   font-size: 0.9rem;
 }
+
+.role{
+  color: black;
+  font-family: 'Montserrat', sans-serif !important;
+
+}

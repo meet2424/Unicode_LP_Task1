@@ -1,22 +1,32 @@
 import React, { useState } from "react";
-import Container from '@material-ui/core/Container';
-import Box from '@mui/material/Box';
 import '../styles/Signup.css'
 import GoogleButton from 'react-google-button'
 import axios from "axios";
 import { Link, useHistory } from "react-router-dom";
 import { useForm } from "react-hook-form";
 
+import Container from '@material-ui/core/Container';
+import Box from '@mui/material/Box';
+import Radio from '@mui/material/Radio';
+import RadioGroup from '@mui/material/RadioGroup';
+import FormControlLabel from '@mui/material/FormControlLabel';
+import FormControl from '@mui/material/FormControl';
+import FormLabel from '@mui/material/FormLabel';
+
 export default function SignUp() {
 
     const { register, handleSubmit, formState: { errors } } = useForm();
     const history = useHistory()
     const [invalidMsg, setInvalidMsg] = useState('')
+    const [selectedValue, setSelectedValue] = useState('user');
 
+    const handleRole = (event) => {
+        setSelectedValue(event.target.value);
+    };
 
     const onSubmit = async (data) => {
         const { username, email, password, phone } = data
-
+        console.log(selectedValue);
         let reqOptions = {
             url: "http://localhost:5000/api/auth/register",
             method: "POST",
@@ -26,7 +36,7 @@ export default function SignUp() {
                 "email": email,
                 "phone": phone,
                 "password": password,
-                "role": "artist"
+                "role": selectedValue,
             }),
         }
         try {
@@ -37,6 +47,7 @@ export default function SignUp() {
             }
 
             localStorage.setItem("authToken", response.data.token);
+            localStorage.setItem("role", response.data.role);
             history.push("/");
 
         } catch (error) {
@@ -130,6 +141,20 @@ export default function SignUp() {
                                 />
                                 <p className="error">{errors.password?.message}</p>
 
+                                {/* <label><b>Please Select your Role</b></label>
+                                <br />
+                                <input id="user" type="radio" name="role" value="user" />
+                                <label htmlFor="user">User</label>
+                                <input id="artist" type="radio" name="role" value="artist" />
+                                <label htmlFor="artist">Artist</label><br /> */}
+
+                                <FormControl component="fieldset">
+                                    <FormLabel component="legend"><b className="role">Please Select your Role</b></FormLabel>
+                                    <RadioGroup row name="role">
+                                        <FormControlLabel value="user" onChange={handleRole} control={<Radio />} label="User" checked={selectedValue === 'user'} />
+                                        <FormControlLabel value="artist" onChange={handleRole} control={<Radio />} label="Artist" checked={selectedValue === 'artist'} />
+                                    </RadioGroup>
+                                </FormControl>
 
                                 <div className="clearfix">
                                     <button type="submit" className="signupbtn button">Sign Up</button>
@@ -145,3 +170,30 @@ export default function SignUp() {
         </div>
     )
 }
+
+// {/* <FormControl>
+//     <RadioGroup value={checked} onChange={handleChange} className="create-note" >
+//         <h2>Question {props.index + 1}
+//             <span style={{ fontSize: "0.9rem" }}> (5 points)
+//             </span>
+//         </h2>
+//         <br />
+//         <p>{he.decode(props.question)}</p>
+//         <br />
+//         <FormControlLabel value="0" control={<Radio size="medium" />} label={he.decode(props.option[props.index][0])} />
+//         <FormControlLabel value="1" control={<Radio size="medium" />} label={he.decode(props.option[props.index][1])} />
+//         <FormControlLabel value="2" control={<Radio size="medium" />} label={he.decode(props.option[props.index][2])} />
+//         <FormControlLabel value="3" control={<Radio size="medium" />} label={he.decode(props.option[props.index][3])} />
+
+//         <div className="dummy" />
+
+//         {(props.index !== 0) && <ArrowBackIosIcon onClick={previous} className="button-previous" fontSize="large" />}
+
+//         {(props.index !== 9) && <ArrowForwardIosIcon onClick={next} className="button-next" fontSize="large" />}
+
+//         {(props.index === 9) && <button
+//             onClick={(() => (checked || require) ? props.handleSubmit(checked) : alert("Please answer the current question"))}
+//             className="button-submit">Submit
+//         </button>}
+//     </RadioGroup>
+// </FormControl> */}

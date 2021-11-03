@@ -83,7 +83,7 @@ exports.ologin = (req, res, next) => {
     }
     const token = req.user.createToken();
 
-    res.redirect(`http://localhost:3000/protected?token=${token}`);
+    res.redirect(`http://localhost:3000/songs?token=${token}`);
 
 }
 
@@ -93,7 +93,8 @@ const sendToken = (user, statusCode, res) => {
     const token = user.createToken();
     res.status(statusCode).json({
         success: true,
-        token
+        token,
+        role: user.role
     })
 
 }

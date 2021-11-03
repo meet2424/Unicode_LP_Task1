@@ -17,13 +17,11 @@ export default function Artist() {
     }
 
     useEffect(() => {
-
         if (!localStorage.getItem('authToken')) {
             history.push('/')
         }
 
         const callProtected = async () => {
-
             let reqOptions = {
                 url: "http://localhost:5000/api/artist",
                 method: "GET",
@@ -39,20 +37,19 @@ export default function Artist() {
                 if (success) {
                     setUserName(username)
                 }
+                else {
+                    history.push('/')
+                }
 
             } catch (error) {
-                // localStorage.removeItem('authToken')
                 history.push('/')
             }
         }
 
         callProtected();
 
-    }, [history])
+    }, [history, setUserName])
 
-    // });
-
-    //
     const [singleFile, setSingleFile] = useState('')
     const [multipleFiles, setMultipleFile] = useState('')
     const [showMultipleFiles, setShowMultipleFiles] = useState([]);
@@ -79,7 +76,7 @@ export default function Artist() {
         try {
             const response = await singleFileUpload(formData)
             setUploadMsg(response.data)
-            document.getElementById("uploadSingleFile").reset();
+            e.target.reset();
         } catch (error) {
             setUploadMsg(error.response.data)
         }
@@ -89,6 +86,7 @@ export default function Artist() {
     const uploadMultipleFiles = async (e) => {
         e.preventDefault()
         const { artist, albumTitle } = e.target
+
         const formData = new FormData();
         for (let i = 0; i < multipleFiles.length; i++) {
             formData.append("files", multipleFiles[i]);
@@ -97,14 +95,12 @@ export default function Artist() {
         formData.append("artist", artist.value);
         formData.append("username", userName);
 
-
         try {
             const response = await multipleFilesUpload(formData)
             setUploadMsg(response.data)
-            document.getElementById("uploadMultipleFile").reset();
+            e.target.reset();
         } catch (error) {
             setUploadMsg(error.response.data)
-            history.push('/Artist')
         }
     }
 
@@ -127,9 +123,6 @@ export default function Artist() {
         <div>
             <h1>Artist Page</h1>
 
-            {/* <h1>Congratulations! Your song is uploaded! Would you like to display all singles? </h1> */}
-            {/* <a href="/displaySongs"><Button> Yes, take me there </Button></a> */}
-            {/* <a href="/singleUpload"><Button> No, I want to upload another track </Button></a> */}
             {uploadMsg}
             <Box >
                 <form id="uploadSingleFile" onSubmit={uploadSingleFiles}>

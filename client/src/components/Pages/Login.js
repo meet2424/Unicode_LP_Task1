@@ -34,6 +34,7 @@ export default function Login() {
             }
 
             localStorage.setItem("authToken", response.data.token);
+            localStorage.setItem("role", response.data.role);
             history.push('/')
 
         } catch (error) {
@@ -49,9 +50,8 @@ export default function Login() {
                     <div>
                         <form className="modal-content" onSubmit={handleSubmit(onSubmit)}>
                             <div className="container">
-                                {!invalidMsg && <h1>Login</h1>}
-                                {!invalidMsg && <p>Please fill in this form to Log in</p>}
-                                <h1 style={{ color: "red" }}>{invalidMsg}</h1>
+                                <h1>Login</h1>
+                                <p>Please fill in this form to Log in</p>
                                 <hr />
 
                                 <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
@@ -61,6 +61,7 @@ export default function Login() {
                                 <br />
                                 <p style={{ textAlign: 'center' }}>OR</p>
                                 <br />
+                                <p className="error">{invalidMsg}</p>
                                 <label><b>Email</b></label>
                                 <input
                                     type="email"
