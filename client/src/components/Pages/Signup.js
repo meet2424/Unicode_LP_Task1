@@ -48,7 +48,7 @@ export default function SignUp() {
 
             localStorage.setItem("authToken", response.data.token);
             localStorage.setItem("role", response.data.role);
-            history.push("/");
+            history.push('/');
 
         } catch (error) {
             setInvalidMsg(error.response.data.message)
@@ -69,7 +69,7 @@ export default function SignUp() {
                                 <h1 style={{ color: "red" }}>{invalidMsg}</h1>
                                 <hr />
 
-                                <a href='http://localhost:5000/api/auth/google'>                                <GoogleButton
+                                <a href='http://localhost:5000/api/auth/google'>   <GoogleButton
                                     className="gbtn"
                                 />
                                 </a>
@@ -141,13 +141,6 @@ export default function SignUp() {
                                 />
                                 <p className="error">{errors.password?.message}</p>
 
-                                {/* <label><b>Please Select your Role</b></label>
-                                <br />
-                                <input id="user" type="radio" name="role" value="user" />
-                                <label htmlFor="user">User</label>
-                                <input id="artist" type="radio" name="role" value="artist" />
-                                <label htmlFor="artist">Artist</label><br /> */}
-
                                 <FormControl component="fieldset">
                                     <FormLabel component="legend"><b className="role">Please Select your Role</b></FormLabel>
                                     <RadioGroup row name="role">
@@ -170,30 +163,3 @@ export default function SignUp() {
         </div>
     )
 }
-
-// {/* <FormControl>
-//     <RadioGroup value={checked} onChange={handleChange} className="create-note" >
-//         <h2>Question {props.index + 1}
-//             <span style={{ fontSize: "0.9rem" }}> (5 points)
-//             </span>
-//         </h2>
-//         <br />
-//         <p>{he.decode(props.question)}</p>
-//         <br />
-//         <FormControlLabel value="0" control={<Radio size="medium" />} label={he.decode(props.option[props.index][0])} />
-//         <FormControlLabel value="1" control={<Radio size="medium" />} label={he.decode(props.option[props.index][1])} />
-//         <FormControlLabel value="2" control={<Radio size="medium" />} label={he.decode(props.option[props.index][2])} />
-//         <FormControlLabel value="3" control={<Radio size="medium" />} label={he.decode(props.option[props.index][3])} />
-
-//         <div className="dummy" />
-
-//         {(props.index !== 0) && <ArrowBackIosIcon onClick={previous} className="button-previous" fontSize="large" />}
-
-//         {(props.index !== 9) && <ArrowForwardIosIcon onClick={next} className="button-next" fontSize="large" />}
-
-//         {(props.index === 9) && <button
-//             onClick={(() => (checked || require) ? props.handleSubmit(checked) : alert("Please answer the current question"))}
-//             className="button-submit">Submit
-//         </button>}
-//     </RadioGroup>
-// </FormControl> */}

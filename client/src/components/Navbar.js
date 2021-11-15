@@ -1,11 +1,11 @@
-import React from 'react';
+import React, { useState, useEffect } from "react";
 import { makeStyles } from '@material-ui/core/styles';
 import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import "./styles/Navbar.css";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
     transparentBar: {
@@ -26,16 +26,30 @@ const useStyles = makeStyles((theme) => ({
     }
 }));
 
-export default function Navbar(props) {
+export default function Navbar() {
     const classes = useStyles();
-    const { role } = props
-    console.log('please');
+    const history = useHistory();
+    const [role, setRole] = useState('')
+    useEffect(() => {
+        const fetchData = () => {
+            if (localStorage.getItem('role')) {
+                setRole(localStorage.getItem('role'))
+            }
+            else {
+                setRole('');
+            }
+            console.log('role');
+        }
+        fetchData();
+    }, [role]);
 
-    // const [role, setRole] = useState('')
-    // if (localStorage.getItem('role')) {
-    //     const take = localStorage.getItem('role')
-    //     setRole(take)
-    // }
+    const onLogout = () => {
+        localStorage.removeItem("authToken")
+        localStorage.removeItem("role")
+        console.log(role);
+        history.push('/')
+    }
+
 
     return (
         <div className={classes.root} >
@@ -48,18 +62,20 @@ export default function Navbar(props) {
                             Music App
                         </Link>
                     </Typography>
-                    {role === 'artist' && <Link to='/artist'>
+                    {(role === 'artist') && <Link to='/artist'>
                         <Button className={classes.navBtn}>Artist</Button>
                     </Link>}
-                    {role === 'user' && <Link to='/songs'>
+                    {(role === 'user' || role === 'artist') && <Link to='/songs'>
                         <Button className={classes.navBtn}>Songs</Button>
                     </Link>}
-                    <Link to='/signup' >
+                    {(!role) && <Link to='/signup' >
                         <Button className={classes.navBtn}>Sign up</Button>
-                    </Link>
-                    <Link to='/login'>
+                    </Link>}
+                    {(!role) && <Link to='/login'>
                         <Button className={classes.navBtn}>Log in</Button>
-                    </Link>
+                    </Link>}
+                    {(role) && <Button className={classes.navBtn} onClick={onLogout}><a href='/'>Logout</a></Button>}
+
                 </Toolbar>
             </AppBar>
         </div>

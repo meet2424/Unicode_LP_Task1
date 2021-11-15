@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from "react";
-import { Box } from '@mui/material';
-// import React, { useState, useEffect } from 'react'
+import { Box, Button } from '@mui/material';
 import { getAllSingleFiles, getMultipleFiles } from '../../api/files';
-// import { Box, Button, TextField } from '@mui/material';
 import axios from 'axios'
 import { useHistory, useLocation } from 'react-router-dom'
+import ReactJkMusicPlayer from 'react-jinke-music-player'
+import 'react-jinke-music-player/assets/index.css'
 
 
 
@@ -16,6 +16,7 @@ function SongsDisplay() {
     const query = new URLSearchParams(useLocation().search);
 
     if (query.get('token') && !localStorage.getItem('authToken')) {
+        localStorage.setItem("role", "user");
         localStorage.setItem('authToken', query.get('token'))
     }
 
@@ -76,6 +77,16 @@ function SongsDisplay() {
         display()
     }, []);
 
+    const [list, setList] = useState([{
+        name: '',
+        musicSrc: '',
+        singer: '',
+    }])
+    const convertString = (path) => {
+        path = path.replace(/\\/g, "/");
+        path = path.replace(/ /g, "%20");
+        return path;
+    }
     return <Box>
         <h1>Hii {userName}</h1>
         <br />
@@ -84,7 +95,16 @@ function SongsDisplay() {
             <h2>Single Tracks</h2>
             {showSingleFiles.map((file) => {
                 return <Box>
-                    <p>{file.fileName}</p>
+                    <Button
+                        key={file._id}
+                        onClick={() => {
+                            let path = convertString("http://localhost:5000/" + file.filePath);
+                            setList([{
+                                name: file.songTitle,
+                                musicSrc: path,
+                                singer: file.artist,
+                            }])
+                        }}>{file.songTitle}</Button>
                     <br />
                 </Box>
             })}
@@ -99,13 +119,40 @@ function SongsDisplay() {
                     <Box>
                         {album.files.map((file) => {
                             return <Box key={file._id}>
-                                <p> {file.fileName}</p>
+                                <Button
+                                    key={file._id}
+                                    onClick={() => {
+                                        let path = convertString("http://localhost:5000/" + file.filePath);
+                                        setList([{
+                                            name: file.fileName.split('.', 1),
+                                            musicSrc: path,
+                                            singer: file.artist,
+                                        }])
+                                    }}> {file.fileName.split("-", 1)}
+                                </Button>
                             </Box>
                         })}
                     </Box>
                     <br />
                 </Box>
             })}
+        </Box>
+        <Box>
+            <ReactJkMusicPlayer
+                quietUpdate
+                clearPriorAudioLists
+                audioLists={list}
+                theme="auto"
+                mode="full"
+                autoHiddenCover
+                spaceBar={true}
+                toggleMode={false}
+                showMiniProcessBar={true}
+                showDownload={false}
+                showThemeSwitch={false}
+                defaultVolume="0.5"
+                restartCurrentOnPrev={true}
+            />
         </Box>
 
     </Box>
