@@ -48,7 +48,7 @@ export default function SignUp() {
 
             localStorage.setItem("authToken", response.data.token);
             localStorage.setItem("role", response.data.role);
-            history.push('/');
+            history.push('/songs');
 
         } catch (error) {
             setInvalidMsg(error.response.data.message)

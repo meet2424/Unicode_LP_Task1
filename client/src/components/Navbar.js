@@ -4,7 +4,13 @@ import AppBar from '@material-ui/core/AppBar';
 import Toolbar from '@material-ui/core/Toolbar';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
+import HomeIcon from '@material-ui/icons/Home';
+import MusicNoteIcon from '@material-ui/icons/MusicNote';
+import ExitToAppIcon from '@material-ui/icons/ExitToApp';
+import HeadsetMicIcon from '@material-ui/icons/HeadsetMic';
+
 import "./styles/Navbar.css";
+
 import { Link, useHistory } from "react-router-dom";
 
 const useStyles = makeStyles((theme) => ({
@@ -23,6 +29,7 @@ const useStyles = makeStyles((theme) => ({
     },
     navBtn: {
         width: 100,
+        color: "#effbff !important",
     }
 }));
 
@@ -59,22 +66,27 @@ export default function Navbar() {
                         variant="h5"
                         className={classes.title}>
                         <Link to='/'>
-                            Music App
+                            <HomeIcon /> W E S I N G
                         </Link>
                     </Typography>
                     {(role === 'artist') && <Link to='/artist'>
-                        <Button className={classes.navBtn}>Artist</Button>
+                        <Button className={classes.navBtn}>
+                            <HeadsetMicIcon style={{ color: "white" }} /> Uploads
+                        </Button>
                     </Link>}
                     {(role === 'user' || role === 'artist') && <Link to='/songs'>
-                        <Button className={classes.navBtn}>Songs</Button>
+                        <Button className={classes.navBtn}><MusicNoteIcon style={{ color: "white" }} />Music</Button>
                     </Link>}
+
                     {(!role) && <Link to='/signup' >
+
                         <Button className={classes.navBtn}>Sign up</Button>
                     </Link>}
                     {(!role) && <Link to='/login'>
                         <Button className={classes.navBtn}>Log in</Button>
                     </Link>}
-                    {(role) && <Button className={classes.navBtn} onClick={onLogout}><a href='/'>Logout</a></Button>}
+
+                    {(role) && <Button className={classes.navBtn} onClick={onLogout}><ExitToAppIcon style={{ color: "white" }} /><a href='/'>Logout</a></Button>}
 
                 </Toolbar>
             </AppBar>
